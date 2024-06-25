@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Param } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { User } from 'src/schema/user.schema';
 
@@ -19,5 +19,10 @@ export class AuthController {
     @Get('all')
     async fetchUserList() {
         return this.authService.fetchAllUsers();
+    }
+
+    @Put('update/:id')
+    async updateUser(@Param('id') id: string, @Body() userDto: User) {
+        return this.authService.updateUser(id, userDto);
     }
 }
