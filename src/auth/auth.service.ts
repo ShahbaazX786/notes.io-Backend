@@ -51,4 +51,8 @@ export class AuthService {
     async updateUser(id, data): Promise<void> {
         return await this.userModel.findByIdAndUpdate(id, data, { new: true });
     }
+
+    async deleteUser(id): Promise<void> {
+        return await this.userModel.findByIdAndDelete(id, { new: true });
+    }
 }
