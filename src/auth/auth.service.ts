@@ -47,4 +47,8 @@ export class AuthService {
         }
         return result;
     }
+
+    async updateUser(id, data): Promise<void> {
+        return await this.userModel.findByIdAndUpdate(id, data, { new: true });
+    }
 }
