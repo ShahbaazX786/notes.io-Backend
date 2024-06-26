@@ -48,4 +48,23 @@ export class NotesService {
         }
         return response;
     }
+
+    async getNoteById(id: string): Promise<NoteResponseDto> {
+        let response: NoteResponseDto;
+        try {
+            const res = await this.noteModel.findById({ _id: id });
+            response = {
+                success: true,
+                message: 'Fetched The Particular Note Successfully',
+                data: res,
+            }
+        } catch (error) {
+            console.log(error);
+            response = {
+                success: false,
+                message: `Error Fetching Particular Note: ${error.message}`,
+            }
+        }
+        return response;
+    }
 }
