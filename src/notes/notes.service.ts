@@ -10,7 +10,7 @@ export class NotesService {
         @InjectModel(Note.name)
         private noteModel: mongoose.Model<Note>) { };
 
-    async createNote(note): Promise<any> {
+    async createNote(note): Promise<NoteResponseDto> {
         let response: NoteResponseDto;
         try {
             const res = await this.noteModel.create(note);
@@ -24,6 +24,26 @@ export class NotesService {
             response = {
                 success: false,
                 message: `Error Creating Notes: ${error.message}`,
+            }
+        }
+        return response;
+    }
+
+    async getNotes(): Promise<NoteResponseDto> {
+        let response: NoteResponseDto;
+        try {
+            const res = await this.noteModel.find({});
+            response = {
+                success: true,
+                message: 'Fetched All Available Notes Successfully',
+                size: res.length,
+                data: res,
+            }
+        } catch (error) {
+            console.log(error);
+            response = {
+                success: false,
+                message: `Error Fetching Notes: ${error.message}`,
             }
         }
         return response;
