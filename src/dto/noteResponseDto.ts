@@ -4,4 +4,5 @@ export interface NoteResponseDto {
     success: boolean;
     message: string;
     data?: Note | Note[];
+    size?: number;
 }
