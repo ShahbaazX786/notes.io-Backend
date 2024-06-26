@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { Note } from 'src/schema/note.schema';
 
@@ -17,4 +17,9 @@ export class NotesController {
         const result = await this.notesService.getNotes();
         return result;
     }
-}
+    @Get(':id')
+    async FetchNoteById(@Param('id') id: string) {
+        const result = await this.notesService.getNoteById(id);
+        return result;
+    }
+};
