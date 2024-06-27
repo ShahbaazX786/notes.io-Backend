@@ -32,14 +32,20 @@ export class NotesService {
 
     async findAll(query: Query): Promise<NoteResponseDto> {
         let response: NoteResponseDto;
+
+        const notesPerPage = Number(process.env.NOTES_PER_PAGE);
+        const currentPage = Number(query.page) || Number(process.env.CURRENT_PAGE);
+        const skip = (currentPage - 1) * notesPerPage;
+
         const keywords = query.keyword ? {
             title: {
                 $regex: query.keyword,
                 $options: 'i'
             }
         } : {};
+        
         try {
-            const res = await this.noteModel.find({ ...keywords });
+            const res = await this.noteModel.find({ ...keywords }).limit(notesPerPage).skip(skip);
             response = {
                 success: true,
                 message: 'Fetched All Available Notes Successfully',
