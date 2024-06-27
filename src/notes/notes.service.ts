@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { NoteResponseDto } from 'src/dto/noteResponseDto';
 import { Note } from 'src/schema/note.schema';
+import { Query } from 'express-serve-static-core';
 
 @Injectable()
 export class NotesService {
@@ -29,10 +30,16 @@ export class NotesService {
         return response;
     }
 
-    async getNotes(): Promise<NoteResponseDto> {
+    async findAll(query: Query): Promise<NoteResponseDto> {
         let response: NoteResponseDto;
+        const keywords = query.keyword ? {
+            title: {
+                $regex: query.keyword,
+                $options: 'i'
+            }
+        } : {};
         try {
-            const res = await this.noteModel.find({});
+            const res = await this.noteModel.find({ ...keywords });
             response = {
                 success: true,
                 message: 'Fetched All Available Notes Successfully',
