@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Body } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { NoteResponseDto } from 'src/dto/noteResponseDto';
@@ -49,7 +49,7 @@ export class NotesService {
         return response;
     }
 
-    async getNoteById(id: string): Promise<NoteResponseDto> {
+    async getNote(id: string): Promise<NoteResponseDto> {
         let response: NoteResponseDto;
         try {
             const res = await this.noteModel.findById({ _id: id });
@@ -63,6 +63,25 @@ export class NotesService {
             response = {
                 success: false,
                 message: `Error Fetching Particular Note: ${error.message}`,
+            }
+        }
+        return response;
+    }
+
+    async updateNote(id: string, note): Promise<NoteResponseDto> {
+        let response: NoteResponseDto;
+        try {
+            const res = await this.noteModel.findByIdAndUpdate(id, note, { new: true });
+            response = {
+                success: true,
+                message: 'Updated the Particular Note Successfully',
+                data: res,
+            }
+        } catch (error) {
+            console.log(error);
+            response = {
+                success: false,
+                message: `Error Updating the particular Note!: ${error.message}`,
             }
         }
         return response;
