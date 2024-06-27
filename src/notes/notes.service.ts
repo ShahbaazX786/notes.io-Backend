@@ -86,4 +86,24 @@ export class NotesService {
         }
         return response;
     }
+
+    async deleteNote(id: string): Promise<NoteResponseDto> {
+        let response: NoteResponseDto;
+        try {
+            const res = await this.noteModel.findByIdAndDelete(id, { new: true });
+            response = {
+                success: true,
+                message: 'Deleted the Particular Note Successfully',
+                data: res,
+            }
+        } catch (error) {
+            console.log(error);
+            response = {
+                success: false,
+                message: `Error Deleting the particular Note!: ${error.message}`,
+            }
+        }
+        return response;
+    }
+
 }
