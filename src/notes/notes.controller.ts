@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
-import { NotesService } from './notes.service';
 import { Note } from 'src/schema/note.schema';
+import { NotesService } from './notes.service';
 
 @Controller('notes')
 export class NotesController {
@@ -34,4 +34,11 @@ export class NotesController {
         const result = await this.notesService.deleteNote(id);
         return result;
     }
+
+    @Delete()
+    async DeleteAllNotes() {
+        const result = await this.notesService.deleteAllNotes();
+        return result;
+    }
+
 };

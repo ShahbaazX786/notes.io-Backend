@@ -1,4 +1,4 @@
-import { Injectable, Body } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { NoteResponseDto } from 'src/dto/noteResponseDto';
@@ -101,6 +101,25 @@ export class NotesService {
             response = {
                 success: false,
                 message: `Error Deleting the particular Note!: ${error.message}`,
+            }
+        }
+        return response;
+    }
+
+    async deleteAllNotes(): Promise<NoteResponseDto> {
+        let response: NoteResponseDto;
+        try {
+            const res = await this.noteModel.deleteMany();
+            response = {
+                success: true,
+                message: 'Deleted All Notes Successfully',
+                data: res as any,
+            }
+        } catch (error) {
+            console.log(error);
+            response = {
+                success: false,
+                message: `Error Deleting All Notes!: ${error.message}`,
             }
         }
         return response;
