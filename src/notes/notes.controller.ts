@@ -1,7 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Query as ExpresQuery } from 'express-serve-static-core';
 import { Note } from 'src/schema/note.schema';
 import { NotesService } from './notes.service';
-
 @Controller('notes')
 export class NotesController {
     constructor(private readonly notesService: NotesService) { }
@@ -13,10 +13,11 @@ export class NotesController {
     }
 
     @Get()
-    async FetchAllNotes() {
-        const result = await this.notesService.getNotes();
+    async getAllNotes(@Query() query: ExpresQuery) {
+        const result = await this.notesService.findAll(query);
         return result;
     }
+
     @Get(':id')
     async FetchNoteById(@Param('id') id: string) {
         const result = await this.notesService.getNote(id);
