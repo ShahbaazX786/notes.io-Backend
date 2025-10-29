@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
-import { NoteResponseDto } from 'src/dto/note/noteResponseDto';
+import { NoteResponseDto } from 'src/dto/note/note-response.dt';
 import { Note } from 'src/schema/note.schema';
 import { Query } from 'express-serve-static-core';
 
