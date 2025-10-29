@@ -126,11 +126,18 @@ export class NotesService {
     let response: NoteResponseDto;
     try {
       const res = await this.noteModel.findByIdAndDelete(id, { new: true });
-      response = {
-        success: true,
-        message: 'Deleted the Particular Note Successfully',
-        data: res,
-      };
+      if (res) {
+        response = {
+          success: true,
+          message: 'Deleted the Particular Note Successfully',
+        };
+      } else {
+        response = {
+          success: false,
+          message: 'Failed to find and delete the Particular Note.',
+        };
+      }
+      return response;
     } catch (error) {
       console.log(error);
       response = {
