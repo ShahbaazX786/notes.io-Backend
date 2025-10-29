@@ -21,7 +21,6 @@ export class AuthService {
     if (isUserExists) {
       return { success: false, message: 'User Already Exists!' };
     }
-    console.log('are we here?');
     const newUser = new this.userModel(user);
     return newUser.save();
   }
@@ -89,6 +88,19 @@ export class AuthService {
       const result = await this.userModel.findOne({ email });
       if (result) {
         return result;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  deleteAllUsers = async () => {
+    try {
+      const result = await this.userModel.deleteMany({});
+      if (result) {
+        return { success: true, message: 'Cleared all users' };
+      } else {
+        return { success: false, message: 'Unable to clear all users' };
       }
     } catch (error) {
       console.log(error);
