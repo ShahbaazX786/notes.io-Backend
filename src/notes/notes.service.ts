@@ -72,11 +72,19 @@ export class NotesService {
     let response: NoteResponseDto;
     try {
       const res = await this.noteModel.findById({ _id: id });
-      response = {
-        success: true,
-        message: 'Fetched The Particular Note Successfully',
-        data: res,
-      };
+      if (res) {
+        response = {
+          success: true,
+          message: 'Fetched The Particular Note Successfully',
+          data: res,
+        };
+      } else {
+        response = {
+          success: false,
+          message: 'No such Note Exists',
+          data: res,
+        };
+      }
     } catch (error) {
       console.log(error);
       response = {
@@ -93,11 +101,17 @@ export class NotesService {
       const res = await this.noteModel.findByIdAndUpdate(id, note, {
         new: true,
       });
-      response = {
-        success: true,
-        message: 'Updated the Particular Note Successfully',
-        data: res,
-      };
+      if (res) {
+        response = {
+          success: true,
+          message: 'Updated the Particular Note Successfully',
+        };
+      } else {
+        response = {
+          success: false,
+          message: 'Failed to find and update the Particular Note.',
+        };
+      }
     } catch (error) {
       console.log(error);
       response = {
