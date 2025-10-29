@@ -1,16 +1,16 @@
+import { UpdateUserDto } from './../dto/auth/update-user.dto';
 import {
   Body,
   Controller,
+  Delete,
   Get,
+  Param,
   Post,
   Put,
-  Param,
-  Delete,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { User } from 'src/schema/user.schema';
 import { CreateUserDto } from 'src/dto/auth/create-user.dto';
 import { LoginUserDto } from 'src/dto/auth/login-user.dto';
+import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
@@ -32,12 +32,20 @@ export class AuthController {
   }
 
   @Put('update/:id')
-  async updateUser(@Param('id') id: string, @Body() userDto: User) {
-    return this.authService.updateUser(id, userDto);
+  async updateUser(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.authService.updateUser(id, updateUserDto);
   }
 
   @Delete('delete/:id')
   async DeleteUser(@Param('id') id: string) {
     return this.authService.deleteUser(id);
+  }
+
+  @Delete('delete/all')
+  async DeleteAllUsers() {
+    return this.authService.deleteAllUsers();
   }
 }
