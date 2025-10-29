@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
+import { AuthResponseDto } from 'src/dto/auth/auth-response.dto';
 import { CreateUserDto } from 'src/dto/auth/create-user.dto';
 import { LoginUserDto } from 'src/dto/auth/login-user.dto';
-import { authResponseDto } from 'src/dto/authResponseDto';
 import { User } from 'src/schema/user.schema';
 
 @Injectable()
@@ -46,7 +46,7 @@ export class AuthService {
   /**
    * Fetches all users
    */
-  async fetchAllUsers(): Promise<any | authResponseDto> {
+  async fetchAllUsers(): Promise<any | AuthResponseDto> {
     let response = {};
     try {
       const userList = await this.userModel.find({});
