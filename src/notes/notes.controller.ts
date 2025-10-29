@@ -9,14 +9,15 @@ import {
   Query,
 } from '@nestjs/common';
 import { Query as ExpresQuery } from 'express-serve-static-core';
-import { Note } from 'src/schema/note.schema';
 import { NotesService } from './notes.service';
+import { CreateNoteDto } from 'src/dto/note/create-note.dto';
+import { UpdateNoteDto } from 'src/dto/note/update-note.dto';
 @Controller('notes')
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 
   @Post()
-  async addNote(@Body() note: Note) {
+  async addNote(@Body() note: CreateNoteDto) {
     const result = await this.notesService.createNote(note);
     return result;
   }
@@ -34,7 +35,7 @@ export class NotesController {
   }
 
   @Put(':id')
-  async updateNoteById(@Param('id') id: string, @Body() note: Note) {
+  async updateNoteById(@Param('id') id: string, @Body() note: UpdateNoteDto) {
     const result = await this.notesService.updateNote(id, note);
     return result;
   }
