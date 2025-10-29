@@ -39,13 +39,15 @@ export class AuthController {
     return this.authService.updateUser(id, updateUserDto);
   }
 
-  @Delete('delete/:id')
-  async DeleteUser(@Param('id') id: string) {
-    return this.authService.deleteUser(id);
-  }
-
+  // This should be up if you want to have it working.
   @Delete('delete/all')
   async DeleteAllUsers() {
     return this.authService.deleteAllUsers();
+  }
+
+  // This should be below. (and nestjs uses fullmatch so even if id has 'all' substring in it it will not trigger above endpoint unless it matches fully.)
+  @Delete('delete/:id')
+  async DeleteUser(@Param('id') id: string) {
+    return this.authService.deleteUser(id);
   }
 }
