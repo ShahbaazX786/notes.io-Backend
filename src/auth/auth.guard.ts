@@ -12,9 +12,7 @@ export class JwtAuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    console.log(request);
     const authHeader = request.headers.authorization;
-    console.log(authHeader);
     const token = authHeader?.split(' ')[1];
 
     if (!authHeader || !authHeader.startsWith('Bearer ') || !token)
@@ -22,7 +20,7 @@ export class JwtAuthGuard implements CanActivate {
 
     try {
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: process.env.JWT_SECRET || 'supersecretkey',
+        secret: process.env.JWT_SECRET,
       });
       request.user = payload; // attach user info to request
       return true;
