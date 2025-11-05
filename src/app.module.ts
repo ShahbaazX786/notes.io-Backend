@@ -4,6 +4,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { JwtCoreModule } from './core/jwt.core.module';
 import { NotesModule } from './notes/notes.module';
 
 @Module({
@@ -13,6 +14,7 @@ import { NotesModule } from './notes/notes.module';
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.DB_URI),
+    JwtCoreModule,
     AuthModule,
     NotesModule,
   ],
