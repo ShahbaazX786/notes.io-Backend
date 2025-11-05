@@ -7,6 +7,6 @@ import { NotesService } from './notes.service';
 @Module({
   imports: [MongooseModule.forFeature([{ name: 'Note', schema: NotesSchema }])],
   controllers: [NotesController],
-  providers: [NotesService]
+  providers: [NotesService],
 })
-export class NotesModule { }
+export class NotesModule {}
