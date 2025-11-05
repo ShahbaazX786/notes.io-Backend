@@ -1,16 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { AuthResponseDto } from 'src/dto/auth/auth-response.dto';
 import { CreateUserDto } from 'src/dto/auth/create-user.dto';
 import { LoginUserDto } from 'src/dto/auth/login-user.dto';
 import { User } from 'src/schema/user.schema';
+import * as crypto from 'bcrypt';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name)
     private userModel: mongoose.Model<User>,
+    private jwtservice: JwtService,
   ) {}
 
   /**
@@ -29,17 +32,36 @@ export class AuthService {
    * Fetches a single user and logs in.
    */
   async fetchUser(userReq: LoginUserDto) {
-    let result;
-    const email = userReq.email;
+    const { email, password } = userReq;
     try {
       const user = await this.userModel.findOne({ email });
-      if (user) {
-        result = user;
-      }
+      if (!user)
+        return {
+          success: false,
+          message: 'Invalid Email Address.',
+        };
+
+      const isPasswordMatch = await crypto.compare(password, user.password);
+      if (!isPasswordMatch)
+        return {
+          success: false,
+          message: 'Wrong Password',
+        };
+
+      const payload = { username: user.username, sub: user._id };
+      const access_token = this.jwtservice.sign(payload);
+      return {
+        success: true,
+        message: 'User Logged In Sucessfully',
+        access_token,
+      };
     } catch (error) {
       console.log(error);
+      return {
+        success: false,
+        message: `Something went wrong:${error.message}`,
+      };
     }
-    return result;
   }
 
   /**
