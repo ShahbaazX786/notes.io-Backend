@@ -95,7 +95,7 @@ export class NotesService {
     return response;
   }
 
-  async updateNote(id: string, note): Promise<NoteResponseDto> {
+  async updateNote(id: string, note: any): Promise<NoteResponseDto> {
     let response: NoteResponseDto;
     try {
       const res = await this.noteModel.findByIdAndUpdate(id, note, {
