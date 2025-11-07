@@ -26,4 +26,8 @@ export class CreateNoteDto {
   @ArrayUnique()
   @IsString({ each: true })
   tags?: string[];
+
+  @IsOptional()
+  @IsString()
+  status?: string;
 }
